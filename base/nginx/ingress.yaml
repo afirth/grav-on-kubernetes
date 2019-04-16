@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: nginx
   annotations:
-    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
@@ -17,4 +17,4 @@ spec:
   tls:
   - hosts:
     - $(HOSTNAME)
-    secretName: nginx-tls
+    secretName: $(HOSTNAME)-tls

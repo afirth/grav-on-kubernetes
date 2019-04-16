@@ -29,3 +29,6 @@ spec:
       - name: nginx-config
         configMap:
           name: nginx-config
+      - name: webroot-pv
+        persistentVolumeClaim:
+          claimName: webroot-pvc
