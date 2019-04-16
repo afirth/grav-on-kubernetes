@@ -2,21 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: php
-  labels:
-    app: php-fpm
+  labels: {}
 spec:
   selector:
-    matchLabels:
-      app: php-fpm
+    matchLabels: {}
   replicas: 1
   template:
     metadata:
-      labels:
-        app: php-fpm
+      labels: {}
     spec:
       containers:
-      - image: php
-        name: php
+      - image: php-fpm
+        name: php-fpm
         ports:
         - containerPort: 9000
           name: php

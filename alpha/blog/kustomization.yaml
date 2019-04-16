@@ -5,7 +5,7 @@ kind: Kustomization
 # Adds namespace to all resources.
 namespace: alpha-blog
 
-namePrefix: alpha-blog
+namePrefix: alpha-blog-
 
 # Labels to add to all resources and selectors.
 commonLabels:
@@ -13,8 +13,8 @@ commonLabels:
 
 
 bases:
-- base/nginx
-- base/php
+- ./../../base/nginx
+- ./../../base/php
 
-patchesStrategicMerge:
+resources:
 - site-data.yaml
