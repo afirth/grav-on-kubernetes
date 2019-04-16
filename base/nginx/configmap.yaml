@@ -11,7 +11,7 @@ data:
         listen 80 default_server;
 
         #shared dir
-        root /var/www/html;
+        root /app;
         server_name _;
         location / {
           #don't serve folders ($uri/)

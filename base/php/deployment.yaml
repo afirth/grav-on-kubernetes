@@ -19,7 +19,7 @@ spec:
           name: php
         volumeMounts:
         - name: webroot-pv
-          mountPath: /var/www/html
+          mountPath: /app
         - name: php-fpm-config
           mountPath: /usr/local/etc/php-fpm.d/www.conf
           subPath: www.conf
