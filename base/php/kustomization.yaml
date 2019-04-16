@@ -9,6 +9,6 @@ resources:
   - service.yaml
 
 images:
-  - name: php #TODO
+  - name: php-fpm
     newName: bitnami/php-fpm
     newTag: 7.3.4-prod
