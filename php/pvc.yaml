@@ -1,0 +1,12 @@
+apiVersion: v1
+metadata:
+  name: webroot-pvc
+  labels:
+    app: "php-backend"
+spec:
+  accessModes:
+    - "ReadWriteMany"
+  resources:
+    requests:
+      storage: "1G"
+  storageClassName: "nfs"

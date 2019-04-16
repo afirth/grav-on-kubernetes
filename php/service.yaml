@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-backend-svc
+  labels:
+    app: "php-backend"
+  annotations:
+spec:
+  type: ClusterIP
+  ports:
+    - name: php
+      port: 9000
+      targetPort: php
+  selector:
+    app: "php-backend"
