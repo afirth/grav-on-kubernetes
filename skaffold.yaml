@@ -1,0 +1,9 @@
+apiVersion: skaffold/v1beta8
+kind: Config
+build:
+  artifacts:
+  - image: gcr.io/flying-blue-mantis/grav-init
+  googleCloudBuild: {}
+deploy:
+  kustomize:
+    path: .

@@ -1,0 +1,31 @@
+# moves the grav skeleton to the nfs webroot (overwriting whatever is there)
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: grav-init
+spec:
+  template:
+    metadata:
+      name: grav-init
+    spec:
+      containers:
+      - name: grav-init
+        image: grav-init
+        command: ["mv"]
+        args: ["/grav", '/app' ]
+        volumeMounts:
+          - name: webroot-pv
+            mountPath: /app
+
+      # this job should be run manually by incrementing completions.
+      # it will wipe your webroot
+      completions: 0
+
+      activeDeadlineSeconds: 30
+      backoffLimit: 0
+      restartPolicy: Never
+
+      volumes:
+      - name: webroot-pv
+        persistentVolumeClaim:
+          claimName: webroot-pvc

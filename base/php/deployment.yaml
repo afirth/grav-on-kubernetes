@@ -20,13 +20,7 @@ spec:
         volumeMounts:
         - name: webroot-pv
           mountPath: /app
-        - name: php-fpm-config
-          mountPath: /usr/local/etc/php-fpm.d/www.conf
-          subPath: www.conf
       volumes:
-      - name: php-fpm-config
-        configMap:
-          name: php-fpm-config
       - name: webroot-pv
         persistentVolumeClaim:
           claimName: webroot-pvc

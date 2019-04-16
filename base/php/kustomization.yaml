@@ -8,8 +8,7 @@ resources:
   - deployment.yaml
   - service.yaml
 
-# Images modify the images:
 images:
   - name: php #TODO
-    newName: grav
-    newTag: 1.15.11-alpine
+    newName: bitnami/php-fpm
+    newTag: 7.3.4-prod
