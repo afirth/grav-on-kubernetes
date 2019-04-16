@@ -1,26 +1,48 @@
+# Copyright 2018 The Kubernetes Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# ----------------------------------------------------
+# Example kustomization.yaml content.
+#
+# This file declares the customization provided by
+# the kustomize program.
+#
+# Since customization is, by definition, _custom_,
+# there are no sensible default values for the fields
+# in this file.
+#
+# The field values used below are merely examples, not
+# to be copied literally.  The values won't work if
+# they happen to be references to external files that
+# don't exist.
+#
+# In practice, fields with no value should simply be
+# omitted from kustomization.yaml to reduce the content
+# visible in configuration reviews.
+# ----------------------------------------------------
 # apiVersion and kind of Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# Adds namespace to all resources.
-namespace: grav-alpha
-
-# Value of this field is prepended to the
-# names of all resources, e.g. a deployment named
-# "wordpress" becomes "alices-wordpress".
-namePrefix: grav-alpha
-
-# Value of this field is appended to the
-# names of all resources, e.g. a deployment named
-# "wordpress" becomes "wordpress-v2".
-# The suffix is appended before content hash
-# if resource type is ConfigMap or Secret.
-nameSuffix: -v1
 # Labels to add to all resources and selectors.
 commonLabels:
-  app.kubernetes.io/name: grav
-  app.kubernetes.io/instance:
-  app.kubernetes.io/managed-by: kustomize
+  app.kubernetes.io/component: nginx
+
+resources:
+  - configmap.yaml
+  - deployment.yaml
+  - ingress.yaml
 
 # Each entry in this list results in the creation of
 # one ConfigMap resource (it's a generator of n maps).
@@ -40,39 +62,6 @@ commonLabels:
   # - JAVA_HOME=/opt/java/jdk
   # - JAVA_TOOL_OPTIONS=-agentlib:hprof
 
-# Each entry in this list results in the creation of
-# one Secret resource (it's a generator of n secrets).
-secretGenerator:
-- name: app-tls
-  files:
-    - secret/tls.cert
-    - secret/tls.key
-  type: "kubernetes.io/tls"
-- name: app-tls-namespaced
-  # you can define a namespace to generate secret in, defaults to: "default"
-  namespace: apps
-  files:
-    - tls.crt=catsecret/tls.cert
-    - tls.key=secret/tls.key
-  type: "kubernetes.io/tls"
-- name: env_file_secret
-  # env is a path to a file to read lines of key=val
-  # you can only specify one env file per secret.
-  env: env.txt
-  type: Opaque
-
-# generatorOptions modify behavior of all ConfigMap and Secret generators
-generatorOptions:
-  # labels to add to all generated resources
-  labels:
-    kustomize.generated.resources: somevalue
-  # annotations to add to all generated resources
-  annotations:
-    kustomize.generated.resource: somevalue
-  # disableNameSuffixHash is true disables the default behavior of adding a
-  # suffix to the names of generated resources that is a hash of
-  # the resource contents.
-  disableNameSuffixHash: true
 
 # Each entry in this list should resolve to a directory
 # containing a kustomization file, else the
@@ -92,51 +81,14 @@ generatorOptions:
 # crucial ways (image tags, a few server arguments,
 # etc. that differ from the common base).
 bases:
-- base/nginx
-- base/php
+- ../base/nginx
+- ../base/php
 
-# Each entry in this list should resolve to
-# a partial or complete resource definition file.
-#
-# The names in these (possibly partial) resource files
-# must match names already loaded via the `resources`
-# field or via `resources` loaded transitively via the
-# `bases` entries.  These entries are used to _patch_
-# (modify) the known resources.
-#
-# Small patches that do one thing are best, e.g. modify
-# a memory request/limit, change an env var in a
-# ConfigMap, etc.  Small patches are easy to review and
-# easy to mix together in overlays.
 patchesStrategicMerge:
 - service_port_8888.yaml
 - deployment_increase_replicas.yaml
 - deployment_increase_memory.yaml
 
-# Each entry in this list should resolve to
-# a kubernetes object and a JSON patch that will be applied
-# to the object.
-# The JSON patch is documented at https://tools.ietf.org/html/rfc6902
-#
-# target field points to a kubernetes object within the same kustomization
-# by the object's group, version, kind, name and namespace.
-# path field is a relative file path of a JSON patch file.
-# The content in this patch file can be either in JSON format as
-#
-#  [
-#    {"op": "add", "path": "/some/new/path", "value": "value"},
-#    {"op": "replace", "path": "/some/existing/path", "value": "new value"}
-#  ]
-#
-# or in YAML format as
-#
-# - op: add
-#   path: /some/new/path
-#   value: value
-# - op:replace
-#   path: /some/existing/path
-#   value: new value
-#
 patchesJson6902:
 - target:
     version: v1
@@ -148,29 +100,6 @@ patchesJson6902:
     kind: Service
     name: my-service
   path: add_service_annotation.yaml
-
-# Each entry in this list should be a relative path to
-# a file for custom resource definition(CRD) in openAPI definition.
-#
-# The presence of this field is to allow kustomize be
-# aware of CRDs and apply proper
-# transformation for any objects in those types.
-#
-# Typical use case: A CRD object refers to a ConfigMap object.
-# In kustomization, the ConfigMap object name may change by adding namePrefix, nameSuffix, or hashing
-# The name reference for this ConfigMap object in CRD object need to be
-# updated with namePrefix, nameSuffix, or hashing in the same way.
-#
-# The annotations can be put into openAPI definitions are:
-#   "x-kubernetes-annotation": ""
-#   "x-kubernetes-label-selector": ""
-#   "x-kubernetes-identity": ""
-#   "x-kubernetes-object-ref-api-version": "v1",
-#   "x-kubernetes-object-ref-kind": "Secret",
-#   "x-kubernetes-object-ref-name-key": "name",
-crds:
-- crds/typeA.json
-- crds/typeB.json
 
 # Vars are used to capture text from one resource's field
 # and insert that text elsewhere.
@@ -189,7 +118,7 @@ crds:
 # ```
 #
 # To do so, add an entry to `vars:` as follows:
-#
+# TODO
 vars:
   - name: SOME_SECRET_NAME
     objref:
@@ -261,6 +190,7 @@ vars:
 #
 # all with the following *kustomization*:
 
+      #TODO
 images:
   - name: postgres
     newName: my-registry/my-postgres

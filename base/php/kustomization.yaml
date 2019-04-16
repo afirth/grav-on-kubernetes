@@ -1,26 +1,75 @@
+# Copyright 2018 The Kubernetes Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# ----------------------------------------------------
+# Example kustomization.yaml content.
+#
+# This file declares the customization provided by
+# the kustomize program.
+#
+# Since customization is, by definition, _custom_,
+# there are no sensible default values for the fields
+# in this file.
+#
+# The field values used below are merely examples, not
+# to be copied literally.  The values won't work if
+# they happen to be references to external files that
+# don't exist.
+#
+# In practice, fields with no value should simply be
+# omitted from kustomization.yaml to reduce the content
+# visible in configuration reviews.
+# ----------------------------------------------------
 # apiVersion and kind of Kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 # Adds namespace to all resources.
-namespace: grav-alpha
+namespace: my-namespace
 
 # Value of this field is prepended to the
 # names of all resources, e.g. a deployment named
 # "wordpress" becomes "alices-wordpress".
-namePrefix: grav-alpha
+namePrefix: alices-
 
 # Value of this field is appended to the
 # names of all resources, e.g. a deployment named
 # "wordpress" becomes "wordpress-v2".
 # The suffix is appended before content hash
 # if resource type is ConfigMap or Secret.
-nameSuffix: -v1
+nameSuffix: -v2
+
 # Labels to add to all resources and selectors.
 commonLabels:
-  app.kubernetes.io/name: grav
-  app.kubernetes.io/instance:
-  app.kubernetes.io/managed-by: kustomize
+  someName: someValue
+  owner: alice
+  app: bingo
+
+# Annotations (non-identifying metadata)
+# to add to all resources.  Like labels,
+# these are key value pairs.
+commonAnnotations:
+  oncallPager: 800-555-1212
+
+# Each entry in this list must resolve to an existing
+# resource definition in YAML.  These are the resource
+# files that kustomize reads, modifies and emits as a
+# YAML string, with resources separated by document
+# markers ("---").
+resources:
+- some-service.yaml
+- sub-dir/some-deployment.yaml
 
 # Each entry in this list results in the creation of
 # one ConfigMap resource (it's a generator of n maps).
@@ -30,15 +79,15 @@ commonLabels:
 # Each configMapGenerator item accepts a parameter of
 # behavior: [create|replace|merge]. This allows an overlay to modify or
 # replace an existing configMap from the parent.
-# configMapGenerator:
-# - name: myJavaServerProps
-  # files:
-  # - application.properties
-  # - more.properties
-# - name: myJavaServerEnvVars
-  # literals:	
-  # - JAVA_HOME=/opt/java/jdk
-  # - JAVA_TOOL_OPTIONS=-agentlib:hprof
+configMapGenerator:
+- name: myJavaServerProps
+  files:
+  - application.properties
+  - more.properties
+- name: myJavaServerEnvVars
+  literals:	
+  - JAVA_HOME=/opt/java/jdk
+  - JAVA_TOOL_OPTIONS=-agentlib:hprof
 
 # Each entry in this list results in the creation of
 # one Secret resource (it's a generator of n secrets).
@@ -92,8 +141,10 @@ generatorOptions:
 # crucial ways (image tags, a few server arguments,
 # etc. that differ from the common base).
 bases:
-- base/nginx
-- base/php
+- ../../base
+- github.com/kubernetes-sigs/kustomize/examples/multibases?ref=v1.0.6
+- github.com/Liujingfang1/mysql
+- github.com/Liujingfang1/kustomize/examples/helloWorld?ref=test-branch
 
 # Each entry in this list should resolve to
 # a partial or complete resource definition file.
