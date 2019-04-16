@@ -4,20 +4,14 @@ from grav copy to bitnami container
 
 config maps for nginx https://docs.bitnami.com/kubernetes/how-to/deploy-php-application-kubernetes-helm/
 
-add nginx access logs
 
-
-From 7-fpm-stretch
-install nginx
-copy site conf
-copy php conf
-unless grav:
+use kustomize
+add nfs volume
+fix config map to use real service
+publish docker image
+create cloudbuild
 install grav
-
-if blank
-install grav
-
-take backup
-update grav and plugins
-flush cache
-
+update php conf
+update nginx sec conf
+check access logs
+add php fpm prometheus sidecar
