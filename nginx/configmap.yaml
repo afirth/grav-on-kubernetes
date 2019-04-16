@@ -21,7 +21,7 @@ data:
           include fastcgi_params;
           fastcgi_param REQUEST_METHOD $request_method;
           fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-          fastcgi_pass php-svc:9000;
+          fastcgi_pass php-fpm-svc:9000;
         }
       }
     }

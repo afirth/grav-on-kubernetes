@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: php
   labels:
-    app: php-backend
+    app: php-fpm
 spec:
   selector:
     matchLabels:
-      app: php-backend
+      app: php-fpm
   replicas: 1
   template:
     metadata:
       labels:
-        app: php-backend
+        app: php-fpm
     spec:
       containers:
       - image: php
