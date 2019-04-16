@@ -16,16 +16,15 @@ spec:
         volumeMounts:
           - name: webroot-pv
             mountPath: /app
-
-      # this job should be run manually by incrementing completions.
-      # it will wipe your webroot
-      completions: 0
-
-      activeDeadlineSeconds: 30
-      backoffLimit: 0
       restartPolicy: Never
-
       volumes:
       - name: webroot-pv
         persistentVolumeClaim:
           claimName: webroot-pvc
+
+  # this job should be run manually by incrementing completions.
+  # it will wipe your webroot
+  completions: 0
+
+  activeDeadlineSeconds: 30
+  backoffLimit: 0
