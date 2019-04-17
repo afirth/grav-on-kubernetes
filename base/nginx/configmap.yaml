@@ -4,18 +4,18 @@ metadata:
   name: nginx-config
 data:
   nginx.conf: |
-user 1;
-worker_processes  1;
+    user 1;
+    worker_processes  1;
 
-events {
-    worker_connections  1024;
-}
+    events {
+      worker_connections  1024;
+    }
 
-http {
-    include       mime.types;
-    default_type  application/octet-stream;
+    http {
+      include       mime.types;
+      default_type  application/octet-stream;
 
-    server {
+      server {
         listen 80 default_server;
         server_name  _;
 
@@ -23,29 +23,29 @@ http {
         index index.php index.html index.htm;
 
         location / {
-            try_files $uri $uri/ /index.php;
-            if (!-e $request_filename) { rewrite ^(.*)$ /index.php last; }
+          try_files $uri $uri/ /index.php;
+          if (!-e $request_filename) { rewrite ^(.*)$ /index.php last; }
         }
 
         location ~ \.php$ {
-            fastcgi_pass php-fpm-svc:9000;
-            fastcgi_split_path_info ^(.+\.php)(/.+)$;
-            fastcgi_index  index.php;
-            include         fastcgi_params;
-            fastcgi_param   SCRIPT_FILENAME    $document_root/$fastcgi_script_name;
-            fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;
+          fastcgi_pass php-fpm-svc:9000;
+          fastcgi_split_path_info ^(.+\.php)(/.+)$;
+          fastcgi_index  index.php;
+          include         fastcgi_params;
+          fastcgi_param   SCRIPT_FILENAME    $document_root/$fastcgi_script_name;
+          fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;
         }
 
 
-        ## Begin - Security
-        # deny all direct access for these folders
+    ## Begin - Security
+    # deny all direct access for these folders
         location ~* /(.git|cache|bin|logs|backups|tests)/.*$ { return 403; }
-        # deny running scripts inside core system folders
+    # deny running scripts inside core system folders
         location ~* /(system|vendor)/.*\.(txt|xml|md|html|yaml|php|pl|py|cgi|twig|sh|bat)$ { return 403; }
-        # deny running scripts inside user folder
+    # deny running scripts inside user folder
         location ~* /user/.*\.(txt|md|yaml|php|pl|py|cgi|twig|sh|bat)$ { return 403; }
-        # deny access to specific files in the root folder
+    # deny access to specific files in the root folder
         location ~ /(LICENSE.txt|composer.lock|composer.json|nginx.conf|web.config|htaccess.txt|\.htaccess) { return 403; }
-        ## End - Security
+    ## End - Security
+      }
     }
-}
