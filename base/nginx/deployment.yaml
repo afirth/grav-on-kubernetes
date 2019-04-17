@@ -22,7 +22,7 @@ spec:
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
         - name: webroot-pv
-          mountPath: /app
+          mountPath: /var/www/html
           #TODO probes
           #TODO metrics
       volumes:

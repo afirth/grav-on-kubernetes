@@ -11,5 +11,4 @@ resources:
 
 images:
   - name: php-fpm
-    newName: bitnami/php-fpm
-    newTag: 7.3.4-prod
+    newName: gcr.io/flying-blue-mantis/php-fpm

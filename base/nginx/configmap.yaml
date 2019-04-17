@@ -4,7 +4,6 @@ metadata:
   name: nginx-config
 data:
   nginx.conf: |
-    user 1;
     worker_processes  1;
 
     events {
@@ -19,7 +18,7 @@ data:
         listen 80 default_server;
         server_name  _;
 
-        root /app;
+        root /var/www/html;
         index index.php index.html index.htm;
 
         location / {

@@ -3,6 +3,9 @@ kind: Config
 build:
   artifacts:
   - image: gcr.io/flying-blue-mantis/grav-init
+    context: ./grav-init/
+  - image: gcr.io/flying-blue-mantis/php-fpm
+    context: ./php-fpm/
   googleCloudBuild: {}
 deploy:
   kustomize:
