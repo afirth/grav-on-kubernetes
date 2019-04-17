@@ -9,15 +9,17 @@ RUN apk update \
     autoconf \
     g++ \
     make \
-    freetype \
     freetype-dev \
-    libjpeg-turbo \
     libjpeg-turbo-dev \
-    libpng \
     libpng-dev \
-    libzip \
     libzip-dev \
     yaml-dev \
+  && apk add --no-cache \
+    freetype \
+    libjpeg-turbo \
+    libpng \
+    libzip \
+    yaml \
   && docker-php-ext-configure gd \
     --with-gd \
     --with-freetype-dir=/usr/include/ \
