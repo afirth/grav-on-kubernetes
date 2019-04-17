@@ -9,6 +9,7 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - ingress.yaml
+  - service.yaml
 
 vars:
   - name: HOSTNAME

@@ -13,6 +13,14 @@ data:
         #shared dir
         root /app;
         server_name _;
+
+        #TODO #HACK
+        location /nginx_status {
+          stub_status on;
+          access_log  on;
+          allow all;  # REPLACE with your access policy
+        }
+
         location / {
           #don't serve folders ($uri/)
           try_files $uri =404;

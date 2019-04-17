@@ -1,30 +1,35 @@
 # moves the grav skeleton to the nfs webroot (overwriting whatever is there)
-apiVersion: batch/v1
-kind: Job
+apiVersion: batch/v1beta1
+kind: CronJob
 metadata:
   name: grav-init
 spec:
-  template:
-    metadata:
-      name: grav-init
+  # use kubectl create job --from=cronjob/<cronjob-name> <job-name>
+  # to initialize site
+  #TODO #HACK
+  schedule: "1 * * * *" #suspended
+  startingDeadlineSeconds: 100
+  suspend: true
+  jobTemplate:
     spec:
-      containers:
-      - name: grav-init
-        image: grav-init
-        command: ["mv"]
-        args: ["/grav", '/app' ]
-        volumeMounts:
+      template:
+        metadata:
+          name: grav-init
+        spec:
+          containers:
+          - name: grav-init
+            image: grav-init
+            args:
+              - mv
+              - /grav
+              - /app
+            volumeMounts:
+              - name: webroot-pv
+                mountPath: /app
+          volumes:
           - name: webroot-pv
-            mountPath: /app
-      restartPolicy: Never
-      volumes:
-      - name: webroot-pv
-        persistentVolumeClaim:
-          claimName: webroot-pvc
-
-  # this job should be run manually by incrementing completions.
-  # it will wipe your webroot
-  completions: 0
-
-  activeDeadlineSeconds: 30
-  backoffLimit: 0
+            persistentVolumeClaim:
+              claimName: webroot-pvc
+          restartPolicy: Never
+      activeDeadlineSeconds: 30
+      backoffLimit: 0

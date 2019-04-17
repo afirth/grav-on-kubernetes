@@ -1,8 +1,8 @@
-FROM alpine
+FROM alpine:3.9
 # install the grav skeleton
 
 RUN apk add --no-cache curl unzip
 
-RUN curl -sSL https://github.com/hibbitts-design/grav-skeleton-open-publishing-space/releases/download/v1.5.0/grav-skeleton-open-publishing-space-site.zip -o zip
-RUN unzip -q zip && rm zip && mv grav-skeleton-open-publishing-space-site grav
-
+RUN mkdir app && \
+      curl -sSL https://github.com/hibbitts-design/grav-skeleton-open-publishing-space/releases/download/v1.5.0/grav-skeleton-open-publishing-space-site.zip -o zip && \
+      unzip -q zip && rm zip && mv grav-skeleton-open-publishing-space-site grav
