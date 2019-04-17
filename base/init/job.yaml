@@ -19,11 +19,7 @@ spec:
           containers:
           - name: grav-init
             image: grav-init
-            args:
-              - rsync
-              - "-av"
-              - grav/
-              - app/
+            args: ["rsync", "-av", "grav/", "app/"]
             volumeMounts:
               - name: webroot-pv
                 mountPath: /app

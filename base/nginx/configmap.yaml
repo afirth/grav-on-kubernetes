@@ -23,7 +23,7 @@ data:
 
         location / {
           #don't serve folders ($uri/)
-          try_files $uri =404;
+          try_files $uri $uri/index.php =404;
         }
 
         ## Begin - Security
