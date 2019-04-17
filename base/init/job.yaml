@@ -31,5 +31,5 @@ spec:
             persistentVolumeClaim:
               claimName: webroot-pvc
           restartPolicy: Never
-      activeDeadlineSeconds: 30
+      activeDeadlineSeconds: 300
       backoffLimit: 0
