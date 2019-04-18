@@ -28,10 +28,12 @@ spec:
         - name: php-config
           mountPath: /usr/local/etc/php-fpm.d/00-overrides.conf
           subPath: 00-overrides.conf
-        volumeMounts:
         - name: webroot-pv
           mountPath: /var/www/html
       volumes:
+      - name: php-config
+        configMap:
+          name: php-config
       - name: webroot-pv
         persistentVolumeClaim:
           claimName: webroot-pvc
