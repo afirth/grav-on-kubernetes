@@ -18,6 +18,8 @@ data:
         listen 80 default_server;
         server_name  _;
 
+        index index.html index.php;
+
         root /var/www/html;
 
         location / {
