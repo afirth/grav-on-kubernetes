@@ -17,3 +17,4 @@ spec:
           - name: php-config
             mountPath: /healthz.sh
             subPath: healthz.sh
+            defaultMode: 0555
