@@ -23,10 +23,17 @@ spec:
             volumeMounts:
               - name: webroot-pv
                 mountPath: /var/www/html
+            resources:
+              requests:
+                memory: "40Mi"
+                cpu: "200m"
+              limits:
+                memory: "100Mi"
+                cpu: "500m"
           volumes:
           - name: webroot-pv
             persistentVolumeClaim:
               claimName: webroot-pvc
           restartPolicy: Never
-      activeDeadlineSeconds: 600
+      activeDeadlineSeconds: 1200
       backoffLimit: 0
