@@ -5,11 +5,13 @@ commonLabels:
   app.kubernetes.io/component: php-fpm
 
 resources:
-  - deployment.yaml
-  - service.yaml
-  - pvc.yaml
-  - configmap.yaml
+- deployment.yaml
+- service.yaml
+- pvc.yaml
+- configmap.yaml
 
 images:
-  - name: php-fpm
-    newName: gcr.io/flying-blue-mantis/php-fpm
+- name: php-fpm
+  newName: gcr.io/flying-blue-mantis/php-fpm
+patchesStrategicMerge:
+- healthcheck_patch.yaml

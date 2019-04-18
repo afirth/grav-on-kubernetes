@@ -7,7 +7,7 @@ add health check to nfs server
 fix rsync to use hash instead of atime for update
 install git for gitsync
 
-php healthy: ask for ping
+php healthy: ask for ping    cat robots.txt && fastcgi ping
 php ready: check status
 nginx healthy: ask for robots.txt
 nginx ready: ??
