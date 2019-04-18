@@ -4,13 +4,14 @@ metadata:
   name: php-config
 data:
   00-overrides.conf: |
-    ;TODO something should hit nfs
-    [global]
-    ;access logs from nginx only
-    access.log = /dev/null
+    ; #TODO something should hit nfs
 
     [www]
-    ;enable status page for readyz etc
+    ; access logs from nginx only
+    access.log = /dev/null
+
+    ; enable status page for readyz etc
     pm.status_path = /status
-    ;enable ping page for healthz
+
+    ; enable ping page for healthz
     ping.path = /ping
