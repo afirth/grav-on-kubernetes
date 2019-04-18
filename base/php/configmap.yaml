@@ -17,12 +17,13 @@ data:
     ping.path = /ping
   healthz.sh: |
     #!/usr/bin/env sh
-    set -eu -o pipefail
-    export SCRIPT_NAME=/ping \
-    export REQUEST_METHOD=GET \
-    NFS_FILE=/var/www/html/robots.txt
-    if test -f $NFS_FILE -ne 0; then
-      echo $NFS_FILE not found. NFS may be down or no content has been initialized.
-      exit 50
-    fi
-    cgi-fcgi -bind -connect localhost:9000 || exit 51
+    set -eux -o pipefail
+
+    # test mount is ok and something installed. use read for timeout
+    head -n1 /var/www/html/index.php | read -t1 || exit 50
+
+    # test php is up (/ping must be configured)
+    SCRIPT_NAME=/ping \
+    SCRIPT_FILENAME=/ping \
+    REQUEST_METHOD=GET \
+    cgi-fcgi -bind -connect localhost:9000 | grep -q pong || exit 51
