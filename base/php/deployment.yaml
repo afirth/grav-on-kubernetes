@@ -18,6 +18,10 @@ spec:
         - containerPort: 9000
           name: php
         volumeMounts:
+        - name: php-config
+          mountPath: /usr/local/etc/php-fpm.d/00-overrides.conf
+          subPath: 00-overrides.conf
+        volumeMounts:
         - name: webroot-pv
           mountPath: /var/www/html
       volumes:

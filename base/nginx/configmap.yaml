@@ -35,6 +35,15 @@ data:
           fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;
         }
 
+        # php health checks
+        location ~ ^/(status|ping)$ {
+          #don't log checks
+          access_log off;
+          fastcgi_pass php-fpm-svc:9000;
+          include fastcgi_params;
+          fastcgi_param SCRIPT_FILENAME $fastcgi_script_name;
+        }
+
 
     ## Begin - Security
     # deny all direct access for these folders

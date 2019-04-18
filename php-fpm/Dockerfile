@@ -3,7 +3,11 @@ FROM php:7.3-fpm-alpine3.9
 MAINTAINER @afirth
 
 # support grav in fpm
-# includes git for gitsync plugin
+# includes:
+# git for gitsync plugin
+# fcgi for status page checks
+# php modules used by grav
+
 RUN apk update \
   && apk add --no-cache --update --virtual buildDeps \
     autoconf \
@@ -33,4 +37,6 @@ RUN apk update \
   && pecl install yaml \
   && docker-php-ext-enable yaml \
   && apk del buildDeps \
-  && apk add --no-cache git
+  && apk add --no-cache \
+    git \
+    fcgi

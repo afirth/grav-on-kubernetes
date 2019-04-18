@@ -8,6 +8,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - pvc.yaml
+  - configmap.yaml
 
 images:
   - name: php-fpm
