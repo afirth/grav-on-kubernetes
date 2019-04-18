@@ -27,12 +27,11 @@ data:
         }
 
         location ~ \.php$ {
-          fastcgi_pass php-fpm-svc:9000;
+          fastcgi_pass    php-fpm-svc:9000;
           fastcgi_split_path_info ^(.+\.php)(/.+)$;
-          fastcgi_index  index.php;
+          fastcgi_index   index.php;
           include         fastcgi_params;
-          fastcgi_param   SCRIPT_FILENAME    $document_root/$fastcgi_script_name;
-          fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;
+          include         fastcgi.conf;
         }
 
         # php health checks
@@ -41,6 +40,7 @@ data:
           access_log off;
           fastcgi_pass php-fpm-svc:9000;
           include fastcgi_params;
+          #and don't serve from document_root
           fastcgi_param SCRIPT_FILENAME $fastcgi_script_name;
         }
 
