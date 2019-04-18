@@ -34,9 +34,9 @@ spec:
       - name: php-config
         configMap:
           name: php-config
+          defaultMode: 0555 #required to mount healthcheck :(
       - name: webroot-pv
         persistentVolumeClaim:
           claimName: webroot-pvc
-        #TODO probes
         # https://www.reddit.com/r/kubernetes/comments/8yvlib/nginx_phpfpm_on_kubernetes/e36ne33/
         #TODO prometheus sidecar
