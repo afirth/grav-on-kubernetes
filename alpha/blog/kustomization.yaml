@@ -10,9 +10,7 @@ commonLabels:
   app.kubernetes.io/instance: alpha-blog
 
 bases:
-- ./../../base/nginx
-- ./../../base/php
-- ./../../base/init
+- ./../../base
 
 resources:
 - site-data.yaml
