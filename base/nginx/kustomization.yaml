@@ -6,20 +6,22 @@ commonLabels:
   app.kubernetes.io/component: nginx
 
 resources:
-  - configmap.yaml
-  - deployment.yaml
-  - ingress.yaml
-  - service.yaml
+- configmap.yaml
+- deployment.yaml
+- ingress.yaml
+- service.yaml
 
 vars:
-  - name: HOSTNAME
-    objref:
-      kind: ConfigMap
-      name: site-data
-      apiVersion: v1
-    fieldref:
-      fieldpath: data.hostname
+- fieldref:
+    fieldPath: data.hostname
+  name: HOSTNAME
+  objref:
+    apiVersion: v1
+    kind: ConfigMap
+    name: site-data
 
 images:
-  - name: nginx
-    newTag: 1.15.11-alpine
+- name: nginx
+  newTag: 1.15.11-alpine
+patchesStrategicMerge:
+- healthcheck_patch.yaml
