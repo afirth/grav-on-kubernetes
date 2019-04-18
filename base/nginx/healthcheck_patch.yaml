@@ -10,5 +10,6 @@ spec:
           livenessProbe:
             httpGet:
               path: /robots.txt
+              port: http
             initialDelaySeconds: 5
             periodSeconds: 3
