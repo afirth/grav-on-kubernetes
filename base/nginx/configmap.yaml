@@ -19,7 +19,7 @@ data:
       server_tokens off;
 
       # maximum file upload size
-      # update 'upload_max_filesize' & 'post_max_size' in /etc/php5/fpm/php.ini accordingly
+      # update upload_max_filesize & post_max_size in /etc/php5/fpm/php.ini accordingly
       client_max_body_size 32m;
       # client_body_timeout 60s; # increase for very long file uploads
       include       mime.types;
@@ -48,7 +48,7 @@ data:
       ## Begin - Checks
         # php health checks
         location ~ ^/(status|ping)$ {
-          access_log off;
+          set $log_quiet = 1
           fastcgi_pass php-fpm-svc:9000;
           include fastcgi_params;
           #and don't serve from document_root
@@ -57,7 +57,7 @@ data:
 
         #used for checking static file serving
         location /robots.txt {
-          access_log off;
+          set $log_quiet = $arg_quiet
         }
 
         # nginx status page
@@ -67,6 +67,18 @@ data:
       ## End - Checks
 
       ## Begin - Logging
+        # quiet logging if quiet==true && status==ok
+        # request /status?quiet=1 will request quiet logging
+        # set $log_quiet = $arg_quiet; or set $log_quiet = 1 in a location
+        map $status $log_ok {
+          ~^[23]  0;
+          default 1;
+        }
+        #log_off = log_quiet && log_ok
+        map $log_quiet $log_off {
+          1       0+$log_ok;
+          default 1;
+        }
 
         log_format json escape=json
           '{'
@@ -76,6 +88,9 @@ data:
             '"http_referrer":"$http_referer",'
             '"http_user_agent":"$http_user_agent",'
             '"msec":"$msec",'
+            '"log_off":"$log_off",'
+            '"log_ok":"$log_ok",'
+            '"log_quiet":"$log_quiet",'
             '"remote_addr":"$remote_addr",'
             '"request_method":"$request_method",'
             '"request_time":"$request_time",'
