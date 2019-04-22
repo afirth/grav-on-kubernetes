@@ -6,10 +6,14 @@ commonLabels:
   app.kubernetes.io/component: nginx
 
 resources:
-- configmap.yaml
 - deployment.yaml
 - ingress.yaml
 - service.yaml
+
+configMapGenerator:
+- name: nginx-config
+  files:
+    - configs/nginx.conf
 
 vars:
 - fieldref:
