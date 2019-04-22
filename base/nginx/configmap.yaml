@@ -1,4 +1,4 @@
-kind: ConfigMap
+'kind: ConfigMap
 apiVersion: v1
 metadata:
   name: nginx-config
@@ -57,15 +57,37 @@ data:
 
         #used for checking static file serving
         location /robots.txt {
-          access_log   off;
+          access_log off;
         }
 
         # nginx status page
         location /proxy_status {
           stub_status on;
-          access_log   off;
         }
       ## End - Checks
+
+      ## Begin - Logging
+
+        log_format json escape=json
+          '{'
+            '"body_bytes_sent":"$body_bytes_sent",'
+            '"bytes_sent":"$bytes_sent",'
+            '"http_host":"$http_host",'
+            '"http_referrer":"$http_referer",'
+            '"http_user_agent":"$http_user_agent",'
+            '"msec":"$msec",'
+            '"remote_addr":"$remote_addr",'
+            '"request_method":"$request_method",'
+            '"request_time":"$request_time",'
+            '"status": "$status",'
+            '"time_local":"$time_local",'
+            '"upstream_addr":"$upstream_addr",'
+            '"upstream_connect_time":"$upstreamconnecttime",'
+            '"upstream_response_time":"$upstream_response_time"'
+          '}';
+        access_log /var/log/nginx/access.log json buffer=64k flush=5s;
+
+      ## End - Logging
 
       ## Begin - Security
         # deny all direct access for these folders
