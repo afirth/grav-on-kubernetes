@@ -55,6 +55,12 @@ data:
           fastcgi_param SCRIPT_FILENAME $fastcgi_script_name;
         }
 
+        #used for checking static file serving
+        location /robots.txt {
+          access_log   off;
+        }
+
+        # nginx status page
         location /proxy_status {
           stub_status on;
           access_log   off;

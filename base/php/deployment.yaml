@@ -26,8 +26,8 @@ spec:
             cpu: "100m"
         volumeMounts:
         - name: php-config
-          mountPath: /usr/local/etc/php-fpm.d/00-overrides.conf
-          subPath: 00-overrides.conf
+          mountPath: /usr/local/etc/php-fpm.d/zzz-overrides.conf
+          subPath: zzz-overrides.conf
         - name: webroot-pv
           mountPath: /var/www/html
       volumes:

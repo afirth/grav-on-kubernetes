@@ -3,9 +3,7 @@ apiVersion: v1
 metadata:
   name: php-config
 data:
-  00-overrides.conf: |
-    ; #TODO something should hit nfs
-
+  zzz-overrides.conf: |
     [www]
     ; access logs from nginx only
     access.log = /dev/null
