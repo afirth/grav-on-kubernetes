@@ -3,18 +3,8 @@ kind: Ingress
 metadata:
   name: nginx
   annotations:
-    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    certmanager.k8s.io/cluster-issuer: letsencrypt-staging
     kubernetes.io/ingress.class: "nginx"
 spec:
-  rules:
-  - host: $(HOSTNAME)
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: nginx
-          servicePort: http
-  tls:
-  - hosts:
-    - $(HOSTNAME)
-    secretName: $(HOSTNAME)-tls
+  rules: {}
+  tls: {}

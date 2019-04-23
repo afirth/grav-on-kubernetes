@@ -13,17 +13,7 @@ bases:
 - ./../../base
 
 resources:
-- site-data.yaml
 - namespace.yaml
 
 patchesStrategicMerge:
 - nginx_ingress_patch.yaml
-
-vars:
-- fieldref:
-    fieldPath: data.hostname
-  name: HOSTNAME
-  objref:
-    apiVersion: v1
-    kind: ConfigMap
-    name: site-data

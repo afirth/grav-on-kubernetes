@@ -15,17 +15,9 @@ configMapGenerator:
   files:
     - configs/nginx.conf
 
-vars:
-- fieldref:
-    fieldPath: data.hostname
-  name: HOSTNAME
-  objref:
-    apiVersion: v1
-    kind: ConfigMap
-    name: site-data
-
 images:
 - name: nginx
   newTag: 1.15.11-alpine
+
 patchesStrategicMerge:
 - healthcheck_patch.yaml

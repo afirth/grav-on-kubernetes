@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: site-data
-data:
-  hostname: blog.alpha.alfirth.com

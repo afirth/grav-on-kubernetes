@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: site-data
 data:
-  hostname: r.alpha.alfirth.com
+  hostname: rimante.alpha.alfirth.com

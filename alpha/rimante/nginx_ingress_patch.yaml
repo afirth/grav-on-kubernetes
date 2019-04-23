@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx
+  annotations:
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+  - host: rimante.alpha.alfirth.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx
+          servicePort: http
+  tls:
+  - hosts:
+    - rimante.alpha.alfirth.com
+    secretName: rimante.alpha.alfirth.com-tls

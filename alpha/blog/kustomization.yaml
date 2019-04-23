@@ -13,5 +13,7 @@ bases:
 - ./../../base
 
 resources:
-- site-data.yaml
 - namespace.yaml
+
+patchesStrategicMerge:
+- nginx_ingress_patch.yaml
