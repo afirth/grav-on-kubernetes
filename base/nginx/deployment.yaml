@@ -30,12 +30,16 @@ spec:
           subPath: nginx.conf
         - name: webroot-pv
           mountPath: /var/www/html
+        - name: nginx-cache
+          mountPath: /var/www/cache
           #TODO probes
           #TODO metrics
       volumes:
       - name: nginx-config
         configMap:
           name: nginx-config
+      - name: nginx-cache
+        emptyDir: {}
       - name: webroot-pv
         persistentVolumeClaim:
           claimName: webroot-pvc
